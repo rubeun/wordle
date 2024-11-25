@@ -9,12 +9,23 @@ const App = () => {
 
   const [wordFound, setWordFound] = useState<boolean>(false);
   const [currentGuessArr, setCurrentGuessArr] = useState<string[]>([]);
+  const [allGuessesArr, setAllGuessesArr] = useState<string[][]>([]);  
 
   // Checks if valid 5-letter word (in WORDS)
   const isValidWord = (guessWordArr: string[]) => {
     const guessWord = guessWordArr.join("").toLowerCase();
     return WORDS.includes(guessWord);
   }
+
+  const wordAlreadySubmitted = (guessWordArr: string[]) => {
+    let wordFound = false;
+    allGuessesArr.forEach((prevGuess) => {
+      if (prevGuess.join("") == guessWordArr.join("")) {
+        wordFound = true;
+      }
+    });
+    return wordFound;
+  };
 
   // Checks the letter to see if its in the word.
   const letterInWord = (guessLetter: string) => {
@@ -34,12 +45,40 @@ const App = () => {
   const handleGuessEntry = (event: KeyboardEvent) => {
     const keyPressed: string = event.key;
     let guessLetters: string[] = [...currentGuessArr];
-    console.log("Key pressed: ", keyPressed);
 
-    if (guessLetters.length < 5) {
-      guessLetters.push(keyPressed);
+    if (keyPressed === "Backspace" || keyPressed === "Delete") {
+      guessLetters.pop();
+      console.log("Deleted Letter: ", guessLetters);
       setCurrentGuessArr(guessLetters);
-    }
+    } else if (keyPressed === "Enter") {
+      if (currentGuessArr.length === 5) {
+        if (isValidWord(currentGuessArr)) {
+          if (wordAlreadySubmitted(currentGuessArr)) {
+            console.log("Word Already Submitted");
+          } else {
+            console.log("Valid Word Submitted");
+            let tempAllWords = [...allGuessesArr];
+            tempAllWords.push(currentGuessArr);
+            if (isWordOfTheDay(currentGuessArr)) {
+              setWordFound(true);
+              console.log("CORRECT WORD GUESSED!");
+            } else {
+              console.log("Not the word of the day :(");
+            }
+            setAllGuessesArr(tempAllWords);
+          }
+        } else {
+          console.log("Invalid Word Submitted");
+        }
+        setCurrentGuessArr([]); // Reset Guess Word
+      } else {
+        console.log("Invalid length, must be 5 letters");
+      }
+    } else if (guessLetters.length < 5) {
+      guessLetters.push(keyPressed);
+      console.log("Added Letter: ", guessLetters);
+      setCurrentGuessArr(guessLetters);
+    }  
   };
 
   useEffect(() => {
