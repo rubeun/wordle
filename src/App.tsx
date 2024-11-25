@@ -95,6 +95,11 @@ const App = () => {
       <header className="header">
         <h1>Rubeun's Wordle App</h1>
       </header>
+      {wordFound ? (
+        <div>
+          <h3>Word Found!</h3>
+        </div>
+      ) : null}
       <WordGrid currentGuessArr={currentGuessArr} />
     </div>
   );
