@@ -35,7 +35,7 @@ const App = () => {
     const keyPressed: string = event.key;
     let guessLetters: string[] = [...currentGuessArr];
     console.log("Key pressed: ", keyPressed);
-    
+
     if (guessLetters.length < 5) {
       guessLetters.push(keyPressed);
       setCurrentGuessArr(guessLetters);
@@ -56,7 +56,7 @@ const App = () => {
       <header className="header">
         <h1>Rubeun's Wordle App</h1>
       </header>
-      <WordGrid />
+      <WordGrid currentGuessArr={currentGuessArr} />
     </div>
   );
 }
