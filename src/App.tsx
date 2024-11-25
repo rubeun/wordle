@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { WORDS } from './data/words';
 
 const App = () => {
   return (
