@@ -1,6 +1,25 @@
 /* WordGrid CSS */
 
 .wordGrid {
+  width: 440px;
   margin: 0 auto;
   color: aqua;
+}
+
+.wordRow {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(5, 80px);
+  height: 80px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.wordRowLetter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  text-transform: capitalize;
+  border: 4px solid #d3d6da;
 }
