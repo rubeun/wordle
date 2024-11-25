@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { WORDS } from './data/words';
+import WordGrid from './components/WordGrid';
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
       <header className="header">
         <h1>Rubeun's Wordle App</h1>
       </header>
+      <WordGrid />
     </div>
   );
 }
