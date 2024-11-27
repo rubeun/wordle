@@ -23,3 +23,11 @@
   text-transform: capitalize;
   border: 4px solid #d3d6da;
 }
+
+.rightLetterWrongPlace {
+  border-color: #c9b458;
+}
+
+.rightLetterRightPlace {
+  border-color: #6aaa64;
+}
