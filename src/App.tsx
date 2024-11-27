@@ -74,6 +74,7 @@ const App = () => {
       } else {
         console.log("Invalid length, must be 5 letters");
       }
+      console.log("All Guesses: ", allGuessesArr);
     } else if (guessLetters.length < 5) {
       guessLetters.push(keyPressed);
       console.log("Added Letter: ", guessLetters);
@@ -100,7 +101,11 @@ const App = () => {
           <h3>Word Found!</h3>
         </div>
       ) : null}
-      <WordGrid currentGuessArr={currentGuessArr} />
+      <WordGrid
+        allGuessesArr={allGuessesArr}
+        answerWordArr={wordOfTheDayArr}
+        currentGuessArr={currentGuessArr}
+      />
     </div>
   );
 }
