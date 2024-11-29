@@ -7,7 +7,7 @@ const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>("brief"); // ### TODO - pull this from WORDS by date
   const [wordOfTheDayArr, setWordOfTheDayArr] = useState<string[]>(wordOfTheDay.split(""));
 
-  const [wordFound, setWordFound] = useState<boolean>(false);
+  const [wordStatus, setWordStatus] = useState<string>("");
   const [currentGuessArr, setCurrentGuessArr] = useState<string[]>([]);
   const [allGuessesArr, setAllGuessesArr] = useState<string[][]>([]);  
 
@@ -18,13 +18,13 @@ const App = () => {
   }
 
   const wordAlreadySubmitted = (guessWordArr: string[]) => {
-    let wordFound = false;
+    let alreadySubmitted = false;
     allGuessesArr.forEach((prevGuess) => {
       if (prevGuess.join("") == guessWordArr.join("")) {
-        wordFound = true;
+        alreadySubmitted = true;
       }
     });
-    return wordFound;
+    return alreadySubmitted;
   };
 
   // Checks the letter to see if its in the word.
@@ -46,6 +46,10 @@ const App = () => {
     const keyPressed: string = event.key;
     let guessLetters: string[] = [...currentGuessArr];
 
+    if (wordStatus === "correct") {
+      return null;
+    }
+
     if (keyPressed === "Backspace" || keyPressed === "Delete") {
       guessLetters.pop();
       console.log("Deleted Letter: ", guessLetters);
@@ -60,7 +64,7 @@ const App = () => {
             let tempAllWords = [...allGuessesArr];
             tempAllWords.push(currentGuessArr);
             if (isWordOfTheDay(currentGuessArr)) {
-              setWordFound(true);
+              setWordStatus("correct");
               console.log("CORRECT WORD GUESSED!");
             } else {
               console.log("Not the word of the day :(");
@@ -69,6 +73,7 @@ const App = () => {
           }
         } else {
           console.log("Invalid Word Submitted");
+          setWordStatus("wrong");
         }
         setCurrentGuessArr([]); // Reset Guess Word
       } else {
@@ -76,6 +81,7 @@ const App = () => {
       }
       console.log("All Guesses: ", allGuessesArr);
     } else if (guessLetters.length < 5) {
+      setWordStatus("");
       guessLetters.push(keyPressed);
       console.log("Added Letter: ", guessLetters);
       setCurrentGuessArr(guessLetters);
@@ -96,15 +102,11 @@ const App = () => {
       <header className="header">
         <h1>Rubeun's Wordle App</h1>
       </header>
-      {wordFound ? (
-        <div>
-          <h3>Word Found!</h3>
-        </div>
-      ) : null}
       <WordGrid
         allGuessesArr={allGuessesArr}
         answerWordArr={wordOfTheDayArr}
         currentGuessArr={currentGuessArr}
+        wordStatus={wordStatus}
       />
     </div>
   );
