@@ -4,6 +4,7 @@ import styles from './WordGrid.module.css';
 
 type WordRowActive = {
   currentGuessArr: string[];
+  wordStatus: string;
 };
 
 type WordRow = {
@@ -15,6 +16,7 @@ type WordGrid = {
   allGuessesArr: string[][];
   answerWordArr: string[];
   currentGuessArr: string[];
+  wordStatus: string,
 };
 
 const WordRowEmpty = () => {
@@ -36,8 +38,12 @@ const WordRowEmpty = () => {
   );
 };
 
-const WordRowActive = ({ currentGuessArr }: WordRowActive) => {
+const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
   let filledGuessArr = [];
+
+  const rightWord = wordStatus === "correct" ? true : false;
+  const wrongWord = wordStatus === "wrong" ? true : false;
+
   if (currentGuessArr.length < 5) {
     const emptyLetters = Array(5 - currentGuessArr.length).fill("");
     filledGuessArr = [...currentGuessArr, ...emptyLetters];
@@ -51,7 +57,12 @@ const WordRowActive = ({ currentGuessArr }: WordRowActive) => {
         return (
           <div
             key={`word-row-active-${index}`}
-            className={styles.wordRowLetter}
+            className={`${styles.wordRowLetter} ${
+              wrongWord 
+                ? styles.wrongWord 
+                : rightWord 
+                  ? styles.rightWord 
+                  : ""}`}
           >
             {guessLetter}
           </div>
@@ -74,8 +85,8 @@ const WordRow = ({ guessWordArr, answerWordArr }: WordRow) => {
               isRightPlace
                 ? styles.rightLetterRightPlace
                 : inAnswerWord
-                ? styles.rightLetterWrongPlace
-                : ""
+                  ? styles.rightLetterWrongPlace
+                  : ""
             }`}
           >
             {guessLetter}
@@ -90,6 +101,7 @@ const WordGrid = ({
   allGuessesArr,
   answerWordArr,
   currentGuessArr,
+  wordStatus,
   }: WordGrid) => {
     const [filledGuessesArr, setFilledGuessesArr] = useState<string[][]>([]);
     const [emptyArrays, setEmptyArrays] = useState<string[]>([]);
@@ -114,7 +126,7 @@ const WordGrid = ({
             ))
           : null}
         {filledGuessesArr.length < 6 ? (
-          <WordRowActive currentGuessArr={currentGuessArr} />
+          <WordRowActive currentGuessArr={currentGuessArr} wordStatus={wordStatus} />
         ) : null}
   
         {emptyArrays.length > 0
