@@ -3,7 +3,7 @@
 .wordGrid {
   width: 440px;
   margin: 0 auto;
-  color: aqua;
+  color: white;
 }
 
 .wordRow {
@@ -30,4 +30,12 @@
 
 .rightLetterRightPlace {
   border-color: #6aaa64;
+}
+
+.wrongWord {
+  font-size: larger;
+}
+
+.rightWord {
+  font-size: larger;
 }
