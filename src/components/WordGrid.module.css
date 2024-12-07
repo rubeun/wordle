@@ -26,14 +26,17 @@
 
 .rightLetterWrongPlace {
   border-color: var(--wrong-place);
+  background-color: var(--wrong-place);
 }
 
 .rightLetterRightPlace {
   border-color: var(--valid);
+  background-color: var(--valid);
 }
 
 .wrongLetter {
   border-color: var(--not-valid);
+  background-color: var(--not-valid);
 }
 
 .wrongWord {
