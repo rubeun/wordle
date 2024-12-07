@@ -1,7 +1,16 @@
+:root {
+  --text: white;
+  --background: black;
+  --valid: #6aaa64;
+  --wrong-place: #c9b458;
+  --not-valid: #3a3a3a;
+  --box-border: #d3d6da;
+}
+
 .container {
   text-align: center;
-  background-color: black;
-  color: white;
+  background-color: var(--background);
+  color: var(--text);
   min-height: 100vh;
 }
 
