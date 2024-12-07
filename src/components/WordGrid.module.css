@@ -3,7 +3,7 @@
 .wordGrid {
   width: 440px;
   margin: 0 auto;
-  color: white;
+  color: var(--text);
 }
 
 .wordRow {
@@ -21,21 +21,25 @@
   align-items: center;
   font-size: 2rem;
   text-transform: capitalize;
-  border: 4px solid #d3d6da;
+  border: 4px solid var(--box-border);
 }
 
 .rightLetterWrongPlace {
-  border-color: #c9b458;
+  border-color: var(--wrong-place);
 }
 
 .rightLetterRightPlace {
-  border-color: #6aaa64;
+  border-color: var(--valid);
+}
+
+.wrongLetter {
+  border-color: var(--not-valid);
 }
 
 .wrongWord {
-  font-size: larger;
+  border: 1px solid red;
 }
 
 .rightWord {
-  font-size: larger;
+  border: 1px solid green;
 }

@@ -40,9 +40,11 @@ const WordRowEmpty = () => {
 
 const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
   let filledGuessArr = [];
-
-  const rightWord = wordStatus === "correct" ? true : false;
   const wrongWord = wordStatus === "wrong" ? true : false;
+
+  if (wordStatus === "correct") {
+    return null;
+  }
 
   if (currentGuessArr.length < 5) {
     const emptyLetters = Array(5 - currentGuessArr.length).fill("");
@@ -60,9 +62,7 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
             className={`${styles.wordRowLetter} ${
               wrongWord 
                 ? styles.wrongWord 
-                : rightWord 
-                  ? styles.rightWord 
-                  : ""}`}
+                : ""}`}
           >
             {guessLetter}
           </div>
@@ -86,7 +86,7 @@ const WordRow = ({ guessWordArr, answerWordArr }: WordRow) => {
                 ? styles.rightLetterRightPlace
                 : inAnswerWord
                   ? styles.rightLetterWrongPlace
-                  : ""
+                  : styles.wrongLetter
             }`}
           >
             {guessLetter}
