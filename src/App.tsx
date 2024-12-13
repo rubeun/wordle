@@ -17,6 +17,7 @@ const App = () => {
     return WORDS.includes(guessWord);
   }
 
+  // Checks if word is a previously guessed valid word
   const wordAlreadySubmitted = (guessWordArr: string[]) => {
     let alreadySubmitted = false;
     allGuessesArr.forEach((prevGuess) => {
@@ -27,13 +28,13 @@ const App = () => {
     return alreadySubmitted;
   };
 
-  // Checks the letter to see if its in the word.
+  // Checks a single letter to see if its in the word.
   const letterInWord = (guessLetter: string) => {
     const wordOfTheDayArr = wordOfTheDay.split("");
     return wordOfTheDayArr.includes(guessLetter.toLowerCase());
   };
 
-  // Checks if is wordOfTheDay
+  // Checks if it is wordOfTheDay
   const isWordOfTheDay = (guessWordArr: string[]) => {
     if (guessWordArr.join("") == wordOfTheDay) {
       return true;
@@ -66,8 +67,10 @@ const App = () => {
             if (isWordOfTheDay(currentGuessArr)) {
               setWordStatus("correct");
               console.log("CORRECT WORD GUESSED!");
+              setCurrentGuessArr([]); // Reset Guess Word
             } else {
               console.log("Not the word of the day :(");
+              setCurrentGuessArr([]); // Clear Guess Word
             }
             setAllGuessesArr(tempAllWords);
           }
@@ -75,7 +78,7 @@ const App = () => {
           console.log("Invalid Word Submitted");
           setWordStatus("wrong");
         }
-        setCurrentGuessArr([]); // Reset Guess Word
+        // setCurrentGuessArr([]); // Reset Guess Word
       } else {
         console.log("Invalid length, must be 5 letters");
       }
@@ -96,6 +99,17 @@ const App = () => {
     };
   }, [handleGuessEntry]);
 
+  useEffect(() => {
+    let delayedMessage: any;
+    if (wordStatus === "wrong" || wordStatus === "correct") {
+      delayedMessage = setTimeout(() => {
+        setWordStatus("");
+      }, 2000);
+    }
+    return () => clearTimeout(delayedMessage);
+  }, [wordStatus]);
+
+
 
   return (
     <div className="container">
@@ -108,6 +122,15 @@ const App = () => {
         currentGuessArr={currentGuessArr}
         wordStatus={wordStatus}
       />
+      {wordStatus === "wrong" ? (
+        <div>
+          <h3>Invalid Word!</h3>
+        </div>
+      ): wordStatus === "correct" ? (
+        <div>
+          <h3>Correct Word!</h3>
+        </div>
+      ) : null}
     </div>
   );
 }
