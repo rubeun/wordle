@@ -1,0 +1,12 @@
+.keyboardGrid div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
+  padding-top: 10px;
+}
+
+.keyboardGrid div button {
+  font-size: 1.4rem;
+  padding: 10px;
+}
