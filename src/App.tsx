@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { WORDS } from './data/words';
 import WordGrid from './components/WordGrid';
+import KeyboardGrid from './components/KeyboardGrid';
 
 const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>("brief"); // ### TODO - pull this from WORDS by date
@@ -10,6 +11,10 @@ const App = () => {
   const [wordStatus, setWordStatus] = useState<string>("");
   const [currentGuessArr, setCurrentGuessArr] = useState<string[]>([]);
   const [allGuessesArr, setAllGuessesArr] = useState<string[][]>([]);  
+
+  const [wrongLetters, setWrongLetters] = useState<string[]>([]);
+  const [letterExists, setLetterExists] = useState<string[]>([]);
+  const [rightPlace, setRightPlace] = useState<string[]>([]);
 
   // Checks if valid 5-letter word (in WORDS)
   const isValidWord = (guessWordArr: string[]) => {
@@ -43,8 +48,7 @@ const App = () => {
     }
   };
 
-  const handleGuessEntry = (event: KeyboardEvent) => {
-    const keyPressed: string = event.key;
+  const handleGuessEntry = (keyPressed: string) => {
     let guessLetters: string[] = [...currentGuessArr];
 
     if (wordStatus === "correct") {
@@ -72,6 +76,28 @@ const App = () => {
               console.log("Not the word of the day :(");
               setCurrentGuessArr([]); // Clear Guess Word
             }
+            // currentGuessArr - what the user just GUESSED
+            // use the currentGuess word to compare with word of the day
+            // fill in wrongLetters, lettersExists, rightPlace array
+            for (let i = 0; i < currentGuessArr.length; i++) {
+              if (currentGuessArr[i] === wordOfTheDayArr[i]) {
+                setRightPlace((prevRightPlace) => [
+                  ...prevRightPlace,
+                  currentGuessArr[i],
+                ]);
+              } else if (wordOfTheDayArr.indexOf(currentGuessArr[i]) !== -1) {
+                setLetterExists((prevLetterExists) => [
+                  ...prevLetterExists,
+                  currentGuessArr[i],
+                ]);
+              } else {
+                setWrongLetters((prevWrongLetters) => [
+                  ...prevWrongLetters,
+                  currentGuessArr[i],
+                ]);
+              }
+            }
+
             setAllGuessesArr(tempAllWords);
           }
         } else {
@@ -84,18 +110,20 @@ const App = () => {
       }
       console.log("All Guesses: ", allGuessesArr);
     } else if (guessLetters.length < 5) {
-      setWordStatus("");
-      guessLetters.push(keyPressed);
-      console.log("Added Letter: ", guessLetters);
-      setCurrentGuessArr(guessLetters);
+      const regex = /^[a-zA-Z]/;
+      if (regex.test(keyPressed) && keyPressed.length === 1) {
+        guessLetters.push(keyPressed.toLowerCase());
+        console.log("Added Letter: ", guessLetters);
+        setCurrentGuessArr(guessLetters);
+      }
     }  
   };
 
   useEffect(() => {
-    window.addEventListener("keydown", handleGuessEntry);
+    window.addEventListener("keydown", handleTypeEntry);
 
     return () => {
-      window.removeEventListener("keydown", handleGuessEntry);
+      window.removeEventListener("keydown", handleTypeEntry);
     };
   }, [handleGuessEntry]);
 
@@ -109,7 +137,15 @@ const App = () => {
     return () => clearTimeout(delayedMessage);
   }, [wordStatus]);
 
+  const handleClickEntry = (keyPressed: string) => {
+    console.log("Clicked: ", keyPressed);
+    handleGuessEntry(keyPressed);
+  };
 
+  const handleTypeEntry = (event: any) => {
+    const keyPressed = event.key;
+    handleGuessEntry(keyPressed);
+  };
 
   return (
     <div className="container">
@@ -121,6 +157,12 @@ const App = () => {
         answerWordArr={wordOfTheDayArr}
         currentGuessArr={currentGuessArr}
         wordStatus={wordStatus}
+      />
+      <KeyboardGrid
+        wrongLetters={wrongLetters}
+        letterExists={letterExists}
+        rightPlace={rightPlace}
+        handleClickEntry={handleClickEntry}
       />
       {wordStatus === "wrong" ? (
         <div>
