@@ -5,7 +5,7 @@ import WordGrid from './components/WordGrid';
 import KeyboardGrid from './components/KeyboardGrid';
 
 const App = () => {
-  const [wordOfTheDay, setWordOfTheDay] = useState<string>("brief"); // ### TODO - pull this from WORDS by date
+  const [wordOfTheDay, setWordOfTheDay] = useState<string>(WORDS[0]); // ### TODO - pull this from WORDS by date
   const [wordOfTheDayArr, setWordOfTheDayArr] = useState<string[]>(wordOfTheDay.split(""));
 
   const [wordStatus, setWordStatus] = useState<string>("");
