@@ -1,30 +1,32 @@
 import { useMemo } from "react";
 import styles from './KeyboardGrid.module.css';
+import { IconBackspace } from '@tabler/icons-react';
 
 type KeyInfo = {
   letter: string;
   status: string;
 }
 
-type KeyboardButton = {
+type KeyboardButtonType = {
   letter: KeyInfo;
   handleClickEntry: any;
 };
 
-type KeyboardGrid = {
+type KeyboardGridType = {
   wrongLetters: string[];
   letterExists: string[];
   rightPlace: string[];
   handleClickEntry: any;
 };
 
-const KeyboardButton = ({ letter, handleClickEntry }: KeyboardButton) => {
-  console.log("Letter: ", letter);
+const KeyboardButton = ({ letter, handleClickEntry }: KeyboardButtonType) => {
     return (
       <button
         className={`${styles.keyboardKey} ${styles[letter.status]}`}
         onClick={() => handleClickEntry(letter.letter)}
-      >{letter.letter}</button>
+      >{letter.letter === "Backspace" ? (
+        <IconBackspace />
+      ) : (letter.letter)}</button>
     );
 };
 
@@ -33,7 +35,7 @@ const KeyboardGrid = ({
   letterExists,
   rightPlace,
   handleClickEntry,
-}: KeyboardGrid) => {
+}: KeyboardGridType) => {
   const keyboard = [
     ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
     ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
