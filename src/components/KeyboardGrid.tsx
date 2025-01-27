@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import styles from './KeyboardGrid.module.css';
 
-type KeyboardButton = {
+type KeyInfo = {
   letter: string;
+  status: string;
+}
+
+type KeyboardButton = {
+  letter: KeyInfo;
   handleClickEntry: any;
 };
 
@@ -14,14 +19,14 @@ type KeyboardGrid = {
 };
 
 const KeyboardButton = ({ letter, handleClickEntry }: KeyboardButton) => {
-  return <button onClick={() => handleClickEntry(letter)}>{letter}</button>;
+  console.log("Letter: ", letter);
+    return (
+      <button
+        className={`${styles.keyboardKey} ${styles[letter.status]}`}
+        onClick={() => handleClickEntry(letter.letter)}
+      >{letter.letter}</button>
+    );
 };
-
-/* 
-	Possible solution:
-	 Refactor keyboardRows into an array of objects with letter and colour status
-	 
-*/
 
 const KeyboardGrid = ({
   wrongLetters,
@@ -29,19 +34,37 @@ const KeyboardGrid = ({
   rightPlace,
   handleClickEntry,
 }: KeyboardGrid) => {
-  const keyboardRow1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
-  const keyboardRow2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
-  const keyboardRow3 = [
-    "Enter",
-    "z",
-    "x",
-    "c",
-    "v",
-    "b",
-    "n",
-    "m",
-    "Backspace",
-  ];
+  const keyboard = [
+    ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+    ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+    ["Enter","z","x","c","v","b","n","m", "Backspace"]];
+
+  const getKeyboardRow = (letterArr: string[]) => {
+    const newRow = letterArr.map((letter, index) => {
+      let letterStatus = "";
+      if (rightPlace.indexOf(letter) !== -1) {
+        letterStatus = "rightLetter";
+      } else if (letterExists.indexOf(letter) !== -1) {
+        letterStatus = "wrongPlace";
+      } else if (wrongLetters.indexOf(letter) !== -1) {
+        letterStatus = "wrongLetter";
+      }
+      return { letter: letter, status: letterStatus };
+    });
+    return newRow;
+  };
+
+  const keyboardRow1 = useMemo(() => {
+    return getKeyboardRow(keyboard[0]);
+  }, [wrongLetters, letterExists, rightPlace]);
+
+  const keyboardRow2 = useMemo(() => {
+    return getKeyboardRow(keyboard[1]);
+  }, [wrongLetters, letterExists, rightPlace]);
+
+  const keyboardRow3 = useMemo(() => {
+    return getKeyboardRow(keyboard[2]);
+  }, [wrongLetters, letterExists, rightPlace]);
 
   return (
     <div className={styles.keyboardGrid}>
