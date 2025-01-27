@@ -10,3 +10,21 @@
   font-size: 1.4rem;
   padding: 10px;
 }
+
+.keyboardKey {
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.wrongLetter {
+  background-color: var(--not-valid);
+}
+
+.wrongPlace {
+  background-color: var(--wrong-place);
+}
+
+.rightLetter {
+  background-color: var(--valid);
+}
