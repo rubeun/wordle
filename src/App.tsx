@@ -119,6 +119,14 @@ const App = () => {
     }  
   };
 
+  // Load Random Word of the Day
+  useEffect(() => {
+    const totalNumWords = WORDS.length;
+    const newWordIndex = Math.floor(Math.random() * totalNumWords);
+    setWordOfTheDay(WORDS[newWordIndex]);
+    setWordOfTheDayArr(WORDS[newWordIndex].split(""));
+  }, [])
+
   useEffect(() => {
     window.addEventListener("keydown", handleTypeEntry);
 
