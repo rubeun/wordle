@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import { cursorTo } from 'readline';
 import styles from './WordGrid.module.css';
 
-type WordRowActive = {
+type WordRowActiveType = {
   currentGuessArr: string[];
   wordStatus: string;
 };
 
-type WordRow = {
+type WordRowType = {
   guessWordArr: string[];
   answerWordArr: string[];
 };
 
-type WordGrid = {
+type WordGridType = {
   allGuessesArr: string[][];
   answerWordArr: string[];
   currentGuessArr: string[];
@@ -38,7 +38,7 @@ const WordRowEmpty = () => {
   );
 };
 
-const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
+const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActiveType) => {
   let filledGuessArr = [];
   const wrongWord = wordStatus === "wrong" ? true : false;
 
@@ -60,9 +60,9 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
           <div
             key={`word-row-active-${index}`}
             className={`${styles.wordRowLetter} ${
-              wrongWord 
+              wordStatus === "wrong" 
                 ? styles.wrongWord 
-                : ""}`}
+                : wordStatus === "correct" ? styles.rightWord : ""}`}
           >
             {guessLetter}
           </div>
@@ -72,20 +72,21 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActive) => {
   );
 };
 
-const WordRow = ({ guessWordArr, answerWordArr }: WordRow) => {
+const WordRow = ({ guessWordArr, answerWordArr }: WordRowType) => {
+  let letterInRightPlace = false;
   return (
     <div className={styles.wordRow}>
       {guessWordArr.map((guessLetter: string, index: number) => {
-        const inAnswerWord = answerWordArr.includes(guessLetter);
         const isRightPlace = guessLetter === answerWordArr[index];
+        const isWrongPlace = answerWordArr.includes(guessLetter); // ### BUG: Needs to be FALSE if letter IS in the Right Place elsewhere if more than 1
         return (
           <div
             key={`word-row-${index}`}
             className={`${styles.wordRowLetter} ${
               isRightPlace
                 ? styles.rightLetterRightPlace
-                : inAnswerWord
-                  ? styles.rightLetterWrongPlace
+                : isWrongPlace
+                  ? styles.rightLetterWrongPlace  // #### BUG : Don't show if letter is guessed
                   : styles.wrongLetter
             }`}
           >
@@ -102,7 +103,7 @@ const WordGrid = ({
   answerWordArr,
   currentGuessArr,
   wordStatus,
-  }: WordGrid) => {
+  }: WordGridType) => {
     const [filledGuessesArr, setFilledGuessesArr] = useState<string[][]>([]);
     const [emptyArrays, setEmptyArrays] = useState<string[]>([]);
     useEffect(() => {
