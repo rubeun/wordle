@@ -3,12 +3,14 @@ import './App.css';
 import { WORDS } from './data/words';
 import WordGrid from './components/WordGrid';
 import KeyboardGrid from './components/KeyboardGrid';
+import Popup from './components/Popup';
 
 const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>(WORDS[0]); // ### TODO - pull this from WORDS by date
   const [wordOfTheDayArr, setWordOfTheDayArr] = useState<string[]>(wordOfTheDay.split(""));
 
-  const [wordStatus, setWordStatus] = useState<string>("");
+  const [wordFound, setWordFound] = useState<boolean>(false);
+  const [wordStatus, setWordStatus] = useState<string>(""); // 4 states: correct, invalid, duplicate, short
   const [currentGuessArr, setCurrentGuessArr] = useState<string[]>([]);
   const [allGuessesArr, setAllGuessesArr] = useState<string[][]>([]);  
 
@@ -26,22 +28,16 @@ const App = () => {
   const wordAlreadySubmitted = (guessWordArr: string[]) => {
     let alreadySubmitted = false;
     allGuessesArr.forEach((prevGuess) => {
-      if (prevGuess.join("") == guessWordArr.join("")) {
+      if (prevGuess.join("") === guessWordArr.join("")) {
         alreadySubmitted = true;
       }
     });
     return alreadySubmitted;
   };
 
-  // Checks a single letter to see if its in the word.
-  const letterInWord = (guessLetter: string) => {
-    const wordOfTheDayArr = wordOfTheDay.split("");
-    return wordOfTheDayArr.includes(guessLetter.toLowerCase());
-  };
-
   // Checks if it is wordOfTheDay
   const isWordOfTheDay = (guessWordArr: string[]) => {
-    if (guessWordArr.join("") == wordOfTheDay) {
+    if (guessWordArr.join("") === wordOfTheDay) {
       return true;
     } else {
       return false;
@@ -51,9 +47,12 @@ const App = () => {
   const handleGuessEntry = (keyPressed: string) => {
     let guessLetters: string[] = [...currentGuessArr];
 
-    if (wordStatus === "correct") {
+    if (wordFound) {
       return null;
     }
+
+    // Reset status on new key input
+    setWordStatus("");
 
     if (keyPressed === "Backspace" || keyPressed === "Delete") {
       guessLetters.pop();
@@ -64,11 +63,13 @@ const App = () => {
         if (isValidWord(currentGuessArr)) {
           if (wordAlreadySubmitted(currentGuessArr)) {
             console.log("Word Already Submitted");
+            setWordStatus("duplicate")
           } else {
             console.log("Valid Word Submitted");
             let tempAllWords = [...allGuessesArr];
             tempAllWords.push(currentGuessArr);
             if (isWordOfTheDay(currentGuessArr)) {
+              setWordFound(true);
               setWordStatus("correct");
               console.log("CORRECT WORD GUESSED!");
               setCurrentGuessArr([]); // Reset Guess Word
@@ -102,11 +103,12 @@ const App = () => {
           }
         } else {
           console.log("Invalid Word Submitted");
-          setWordStatus("wrong");
+          setWordStatus("invalid");
         }
         // setCurrentGuessArr([]); // Reset Guess Word
       } else {
         console.log("Invalid length, must be 5 letters");
+        setWordStatus("short");
       }
       console.log("All Guesses: ", allGuessesArr);
     } else if (guessLetters.length < 5) {
@@ -135,9 +137,14 @@ const App = () => {
     };
   }, [handleGuessEntry]);
 
+  // Remove popup after a 2s delay
   useEffect(() => {
     let delayedMessage: any;
-    if (wordStatus === "wrong" || wordStatus === "correct") {
+    if (wordStatus === "invalid" 
+          || wordStatus === "correct" 
+          || wordStatus === "duplicate"
+          || wordStatus === "short"
+        ) {
       delayedMessage = setTimeout(() => {
         setWordStatus("");
       }, 2000);
@@ -160,6 +167,7 @@ const App = () => {
       <header className="header">
         <h1>Rubeun's Wordle App</h1>
       </header>
+      <Popup wordStatus={wordStatus} />
       <WordGrid
         allGuessesArr={allGuessesArr}
         answerWordArr={wordOfTheDayArr}
@@ -172,15 +180,6 @@ const App = () => {
         rightPlace={rightPlace}
         handleClickEntry={handleClickEntry}
       />
-      {wordStatus === "wrong" ? (
-        <div>
-          <h3>Invalid Word!</h3>
-        </div>
-      ): wordStatus === "correct" ? (
-        <div>
-          <h3>Correct Word!</h3>
-        </div>
-      ) : null}
     </div>
   );
 }
