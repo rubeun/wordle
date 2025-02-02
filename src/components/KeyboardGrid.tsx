@@ -72,17 +72,17 @@ const KeyboardGrid = ({
     <div className={styles.keyboardGrid}>
       <div className="keyboardRow1">
         {keyboardRow1.map((letter, index) => (
-          <KeyboardButton letter={letter} handleClickEntry={handleClickEntry} />
+          <KeyboardButton key={index} letter={letter} handleClickEntry={handleClickEntry} />
         ))}
       </div>
       <div className="keyboardRow2">
         {keyboardRow2.map((letter, index) => (
-          <KeyboardButton letter={letter} handleClickEntry={handleClickEntry} />
+          <KeyboardButton key={index} letter={letter} handleClickEntry={handleClickEntry} />
         ))}
       </div>
       <div className="keyboardRow3">
         {keyboardRow3.map((letter, index) => (
-          <KeyboardButton letter={letter} handleClickEntry={handleClickEntry} />
+          <KeyboardButton key={index} letter={letter} handleClickEntry={handleClickEntry} />
         ))}
       </div>
     </div>
