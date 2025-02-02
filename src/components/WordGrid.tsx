@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { cursorTo } from 'readline';
 import styles from './WordGrid.module.css';
 
 type WordRowActiveType = {
@@ -40,11 +39,6 @@ const WordRowEmpty = () => {
 
 const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActiveType) => {
   let filledGuessArr = [];
-  const wrongWord = wordStatus === "wrong" ? true : false;
-
-  if (wordStatus === "correct") {
-    return null;
-  }
 
   if (currentGuessArr.length < 5) {
     const emptyLetters = Array(5 - currentGuessArr.length).fill("");
@@ -60,9 +54,9 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActiveType) => {
           <div
             key={`word-row-active-${index}`}
             className={`${styles.wordRowLetter} ${
-              wordStatus === "wrong" 
-                ? styles.wrongWord 
-                : wordStatus === "correct" ? styles.rightWord : ""}`}
+              wordStatus === "invalid" || wordStatus === "duplicate" || wordStatus === "short"
+                ? styles.shakeWords 
+                : ""}`}
           >
             {guessLetter}
           </div>
@@ -73,7 +67,6 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActiveType) => {
 };
 
 const WordRow = ({ guessWordArr, answerWordArr }: WordRowType) => {
-  let letterInRightPlace = false;
   return (
     <div className={styles.wordRow}>
       {guessWordArr.map((guessLetter: string, index: number) => {
