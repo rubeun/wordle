@@ -39,12 +39,12 @@
   background-color: var(--not-valid);
 }
 
-.wrongWord {
+.shakeWords {
   animation: shakeX .5s ease-in-out;
 }
 
 .rightWord {
-  animation: shakeY .5s ease-in-out;
+  animation: shakeY 1s ease-in-out;
 }
 
 @keyframes shakeX {
