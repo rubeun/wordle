@@ -1,0 +1,17 @@
+.popupContainer {
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+.popupContainer div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--popup-text);
+  background-color: var(--popup-background);
+  border-radius: 10px;
+  width: 200px;
+  height: 50px;
+  margin: 50px auto;
+}
