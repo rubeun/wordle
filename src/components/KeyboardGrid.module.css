@@ -9,6 +9,12 @@
 .keyboardGrid div button {
   font-size: 1.4rem;
   padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.keyboardGrid div button:active {
+  opacity: 0.5;
 }
 
 .keyboardKey {
