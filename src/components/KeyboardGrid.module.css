@@ -34,3 +34,17 @@
 .rightLetter {
   background-color: var(--valid);
 }
+
+@media only screen and (max-width: 600px) {
+  .keyboardGrid div button {
+    font-size: 1.1rem;
+    padding: 8px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .keyboardGrid div button {
+    font-size: 1.0rem;
+    padding: 6px;
+  }
+}
