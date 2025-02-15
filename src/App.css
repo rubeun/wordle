@@ -23,3 +23,19 @@
   justify-content: center;
   font-size: calc(6px + 2vmin);
 }
+
+/* Fancy Anim */
+.glow {
+  animation-duration: 1s;
+  animation-name: glow;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+@keyframes glow {
+  from {
+    text-shadow: -2px 2px rgb(253, 0, 169);
+  } to {
+    text-shadow: 2px 2px rgb(0, 0, 0);
+  }
+}
