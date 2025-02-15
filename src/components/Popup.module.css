@@ -1,17 +1,28 @@
 .popupContainer {
   position: fixed;
   width: 100%;
-  top: 0;
+  top: 25vh;
 }
 
 .popupContainer div {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   color: var(--popup-text);
   background-color: var(--popup-background);
   border-radius: 10px;
   width: 200px;
-  height: 50px;
   margin: 50px auto;
+  padding: 20px;
+}
+
+.greenWord {
+  color: var(--valid);
+  text-transform: uppercase;
+}
+
+.popupContainer button {
+  padding: 5px;
+  margin-top: 20px;
 }
