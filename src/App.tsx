@@ -4,6 +4,8 @@ import { WORDS } from './data/words';
 import WordGrid from './components/WordGrid';
 import KeyboardGrid from './components/KeyboardGrid';
 import Popup from './components/Popup';
+import Header from './components/Header';
+import { useUserInfo } from './hooks/useUserInfo';
 
 const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>(WORDS[0]); // ### TODO - pull this from WORDS by date
@@ -17,6 +19,8 @@ const App = () => {
   const [wrongLetters, setWrongLetters] = useState<string[]>([]);
   const [letterExists, setLetterExists] = useState<string[]>([]);
   const [rightPlace, setRightPlace] = useState<string[]>([]);
+
+  const { userInfo, addWin, addLoss, addPreviousWordOfTheDay } = useUserInfo();
 
   // Checks if valid 5-letter word (in WORDS)
   const isValidWord = (guessWordArr: string[]) => {
@@ -44,10 +48,35 @@ const App = () => {
     }
   };
 
+  // Load new random word
+  const loadNewWord = () => {
+    const totalNumWords = WORDS.length;
+    const newWordIndex = Math.floor(Math.random() * totalNumWords);
+    setWordOfTheDay(WORDS[newWordIndex]);
+    setWordOfTheDayArr(WORDS[newWordIndex].split(""));
+  }
+
+  // Reset grid and loads next word
+  const resetBoard = () => {
+    setAllGuessesArr([]);
+    setWrongLetters([]);
+    setLetterExists([]);
+    setRightPlace([]);
+    setWordFound(false);
+    setWordStatus("");
+    loadNewWord();
+  }
+
   const handleGuessEntry = (keyPressed: string) => {
     let guessLetters: string[] = [...currentGuessArr];
 
+    // Don't allow typing when word is found
     if (wordFound) {
+      return null;
+    }
+
+    // Don't allow typing when all guesses used up
+    if (allGuessesArr.length > 5) {
       return null;
     }
 
@@ -72,11 +101,18 @@ const App = () => {
               setWordFound(true);
               setWordStatus("correct");
               console.log("CORRECT WORD GUESSED!");
-              setCurrentGuessArr([]); // Reset Guess Word
+              addWin();
+              addPreviousWordOfTheDay(wordOfTheDay);
             } else {
               console.log("Not the word of the day :(");
-              setCurrentGuessArr([]); // Clear Guess Word
+              // ##### TODO: Check if all 6 guesses used up
+              if (allGuessesArr.length > 5) {
+                console.log("Ran out of Guesses!");
+              }
             }
+            setCurrentGuessArr([]); // Clear Guess Word
+
+            // ## Fill in arrays for right place, letter exists and wrong letters
             // currentGuessArr - what the user just GUESSED
             // use the currentGuess word to compare with word of the day
             // fill in wrongLetters, lettersExists, rightPlace array
@@ -98,7 +134,6 @@ const App = () => {
                 ]);
               }
             }
-
             setAllGuessesArr(tempAllWords);
           }
         } else {
@@ -111,7 +146,7 @@ const App = () => {
         setWordStatus("short");
       }
       console.log("All Guesses: ", allGuessesArr);
-    } else if (guessLetters.length < 5) {
+    } else if (guessLetters.length < 5) {   // Enter Letters - Alphabets Only
       const regex = /^[a-zA-Z]/;
       if (regex.test(keyPressed) && keyPressed.length === 1) {
         guessLetters.push(keyPressed.toLowerCase());
@@ -123,10 +158,7 @@ const App = () => {
 
   // Load Random Word of the Day
   useEffect(() => {
-    const totalNumWords = WORDS.length;
-    const newWordIndex = Math.floor(Math.random() * totalNumWords);
-    setWordOfTheDay(WORDS[newWordIndex]);
-    setWordOfTheDayArr(WORDS[newWordIndex].split(""));
+    loadNewWord();
   }, [])
 
   useEffect(() => {
@@ -141,7 +173,7 @@ const App = () => {
   useEffect(() => {
     let delayedMessage: any;
     if (wordStatus === "invalid" 
-          || wordStatus === "correct" 
+          // || wordStatus === "correct" 
           || wordStatus === "duplicate"
           || wordStatus === "short"
         ) {
@@ -164,10 +196,13 @@ const App = () => {
 
   return (
     <div className="container">
-      <header className="header">
-        <h1>Rubeun's Wordle App</h1>
-      </header>
-      <Popup wordStatus={wordStatus} />
+      <Header />
+      <Popup 
+        wordStatus={wordStatus} 
+        wordOfTheDay={wordOfTheDay}
+        userInfo={userInfo}
+        resetBoard={resetBoard} 
+      />
       <WordGrid
         allGuessesArr={allGuessesArr}
         answerWordArr={wordOfTheDayArr}
