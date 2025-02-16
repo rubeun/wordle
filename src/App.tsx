@@ -75,7 +75,7 @@ const App = () => {
       return null;
     }
 
-    // Don't allow typing when all guesses used up
+    // // Don't allow typing when all guesses used up
     if (allGuessesArr.length > 5) {
       return null;
     }
@@ -106,8 +106,10 @@ const App = () => {
             } else {
               console.log("Not the word of the day :(");
               // ##### TODO: Check if all 6 guesses used up
-              if (allGuessesArr.length > 5) {
+              if (allGuessesArr.length > 4) {
                 console.log("Ran out of Guesses!");
+                setWordStatus("lost");
+                addLoss();
               }
             }
             setCurrentGuessArr([]); // Clear Guess Word
