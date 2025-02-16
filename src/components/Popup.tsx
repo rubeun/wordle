@@ -21,16 +21,15 @@ type PopupType = {
 }
 
 const Popup = ({ wordStatus, wordOfTheDay, userInfo, resetBoard }: PopupType) => {
-  const wins = userInfo.wins;
-  const losses =  (userInfo.previousWordOfTheDays.length) - userInfo.wins;
   return (
     <div className={styles.popupContainer}>
       {wordStatus === "correct" 
         ? ( <div>
-              <h3>Correct Word <span className={styles.greenWord}>{wordOfTheDay}</span> Guessed!</h3>
-              <h5>Wins: {wins}</h5>
-              <h5>Losses: {losses}</h5>
-              <h5><button onClick={resetBoard}>Load Next Word</button></h5>
+              <h3 className={styles.glowGreen}>Correct Word Guessed!</h3>
+              <h5>Wins: {userInfo.wins}<br />
+                Losses: {userInfo.losses}<br />
+                <button onClick={resetBoard}>Load Next Word</button>
+              </h5>
             </div>)
         : wordStatus === "duplicate"
           ? (<div>Already guessed</div>)
@@ -40,9 +39,10 @@ const Popup = ({ wordStatus, wordOfTheDay, userInfo, resetBoard }: PopupType) =>
               ? (<div>Word too short!</div>)
               : wordStatus === "lost"
                 ? ( <div>
-                  <h3>The Correct Word was <span className={styles.greenWord}>{wordOfTheDay}</span></h3>
-                  <h5>Wins: {wins}</h5>
-                  <h5>Losses: {losses}</h5>
+                  <h3>Out of Guesses!</h3>
+                  <h5>The Correct Word was <span className={styles.greenWord}>{wordOfTheDay}</span></h5>
+                  <h5>Wins: {userInfo.wins}</h5><br />
+                  <h5>Losses: {userInfo.losses}</h5>
                   <h5><button onClick={resetBoard}>Load Next Word</button></h5>
                 </div>)
                 : null  
