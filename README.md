@@ -1,6 +1,8 @@
 # Rubeun's Wordle Clone TypeScript App
 Clone of the popular 5-letter word guessing game
 
+App deployed online: [https://rubeun.github.io/wordle](https://rubeun.github.io/wordle)
+
 ## Available Scripts
 
 In the project directory, you can run:
