@@ -15,16 +15,18 @@ export const useUserInfo = () => {
   })
 
   const addWin = () => {
+    const newWins = userInfo.wins + 1;
     setUserInfo(userInfo => ({
       ...userInfo,
-      wins: userInfo.wins++,
+      wins: newWins,
     }))
   }
 
   const addLoss = () => {
+    const newLosses = userInfo.losses + 1;
     setUserInfo(userInfo => ({
       ...userInfo,
-      losses: userInfo.losses++,
+      losses: newLosses,
     }))
   }
 
