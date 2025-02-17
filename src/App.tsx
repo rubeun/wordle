@@ -110,6 +110,7 @@ const App = () => {
                 console.log("Ran out of Guesses!");
                 setWordStatus("lost");
                 addLoss();
+                addPreviousWordOfTheDay(wordOfTheDay);
               }
             }
             setCurrentGuessArr([]); // Clear Guess Word
