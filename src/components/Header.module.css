@@ -6,3 +6,21 @@
   font-size: calc(6px + 2vmin);
   padding: 20px 0;
 }
+
+/* Fancy Anim */
+.glowHeader {
+  animation-duration: 1s;
+  animation-name: glowHeader;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+@keyframes glowHeader {
+  from {
+    margin-left: -4px;
+    text-shadow: 2px -4px rgb(169, 15, 252);
+  } to {
+    margin-left: 4px;
+    text-shadow: 2px 4px rgb(205, 98, 255);
+  }
+}
