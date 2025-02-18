@@ -2,8 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 5px;
-  padding-top: 10px;
+  &:first-child {
+    margin-top: 20px;
+  }
 }
 
 .keyboardGrid div button {
@@ -46,6 +47,6 @@
 @media only screen and (max-width: 400px) {
   .keyboardGrid div button {
     font-size: 1.0rem;
-    padding: 6px;
+    padding: 12px 8px;
   }
 }
