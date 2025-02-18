@@ -27,6 +27,12 @@
   margin-top: 20px;
 }
 
+.nextWord {
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
 /* Fancy Anim */
 .glowGreen {
   animation-duration: 1s;
@@ -37,8 +43,10 @@
 }
 @keyframes glowGreen {
   from {
+    color: rgb(0, 134, 36);
     text-shadow: -2px 2px rgb(0, 253, 84);
   } to {
+    color: rgb(18, 18, 18);
     text-shadow: 2px 2px rgb(19, 161, 0);
   }
 }
