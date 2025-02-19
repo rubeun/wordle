@@ -112,7 +112,7 @@
 @media only screen and (max-width: 400px) {
   .wordRow {
     grid-template-columns: repeat(5, 50px);
-    height: 60px;
+    height: 55px;
   }  
 
 }

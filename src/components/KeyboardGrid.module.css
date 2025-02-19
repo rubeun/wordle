@@ -55,8 +55,20 @@
 }
 
 @media only screen and (max-width: 400px) {
+  .keyboardGrid div {
+    &:first-child {
+      margin-top: 20px;
+    }
+  }  
   .keyboardGrid div button {
     font-size: 1.0rem;
     padding: 12px 8px;
   }
+  .keyboardGrid div button {
+    min-width: 30px;
+    height: 50px;
+    &.backspace {
+      padding: 9px 10px;    
+    }
+  }  
 }
