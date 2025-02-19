@@ -20,11 +20,16 @@ type KeyboardGridType = {
 };
 
 const KeyboardButton = ({ letter, handleClickEntry }: KeyboardButtonType) => {
+  const isBackspace = letter.letter === "Backspace";
     return (
       <button
-        className={`${styles.keyboardKey} ${styles[letter.status]}`}
+        className={`
+          ${styles.keyboardKey} 
+          ${styles[letter.status]} 
+          ${isBackspace ? styles.backspace : null}
+        `}
         onClick={() => handleClickEntry(letter.letter)}
-      >{letter.letter === "Backspace" ? (
+      >{isBackspace ? (
         <IconBackspace />
       ) : (letter.letter)}</button>
     );
