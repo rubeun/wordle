@@ -20,6 +20,18 @@
   &.backspace {
     padding: 9px 10px;    
   }
+  &.wrongLetter {
+    color: var(--text);
+    background-color: var(--not-valid);
+  }
+  &.wrongPlace {
+    color: var(--text);
+    background-color: var(--wrong-place);
+  }
+  &.rightLetter {
+    color: var(--text);
+    background-color: var(--valid);
+  }  
 }
 
 .keyboardGrid div button:active {
@@ -30,18 +42,6 @@
   font-size: 1.2rem;
   text-transform: capitalize;
   font-weight: bold;
-}
-
-.wrongLetter {
-  background-color: var(--not-valid);
-}
-
-.wrongPlace {
-  background-color: var(--wrong-place);
-}
-
-.rightLetter {
-  background-color: var(--valid);
 }
 
 @media only screen and (max-width: 600px) {
