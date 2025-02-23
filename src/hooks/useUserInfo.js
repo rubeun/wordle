@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useUserInfo = () => {
+export const useUserInfo = (guesses) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     wins: 0,
@@ -14,11 +14,13 @@ export const useUserInfo = () => {
     previousWordOfTheDays: [],
   })
 
-  const addWin = () => {
+  const addWin = (guesses) => {
     const newWins = userInfo.wins + 1;
+    const winKey = `guessIn${guesses}`;
     setUserInfo(userInfo => ({
       ...userInfo,
       wins: newWins,
+      [winKey]: userInfo[winKey] + 1,
     }))
   }
 
