@@ -1,4 +1,23 @@
 :root {
+  --text: black;
+  --background: #f8f8f8;
+  --popup-text: black;
+  --popup-background: white;
+  --valid: #538d4e;
+  --wrong-place: #c9b458;
+  --not-valid: #787c7e;
+  --box-border: #d3d6da;
+  --key-text: black;
+  --key-background: #d3d6da;
+  --key-highlighted: white;
+  --box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+  0 2px 2px hsl(0deg 0% 0% / 0.075),
+  0 4px 4px hsl(0deg 0% 0% / 0.075),
+  0 8px 8px hsl(0deg 0% 0% / 0.075),
+  0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+.darkMode {
   --text: white;
   --background: black;
   --popup-text: black;
@@ -7,7 +26,9 @@
   --wrong-place: #c9b458;
   --not-valid: #3a3a3a;
   --box-border: #d3d6da;
-  --key-text: black;
+  --key-text: white;
+  --key-background: #818384;
+  --key-highlighted: white;
 }
 
 .container {
