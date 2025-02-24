@@ -8,6 +8,7 @@ import Header from './components/Header';
 import { useUserInfo } from './hooks/useUserInfo';
 
 const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [wordOfTheDay, setWordOfTheDay] = useState<string>(WORDS[0]); // ### TODO - pull this from WORDS by date
   const [wordOfTheDayArr, setWordOfTheDayArr] = useState<string[]>(wordOfTheDay.split(""));
 
@@ -21,6 +22,10 @@ const App = () => {
   const [rightPlace, setRightPlace] = useState<string[]>([]);
 
   const { userInfo, addWin, addLoss, addPreviousWordOfTheDay } = useUserInfo();
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  }
 
   // Checks if valid 5-letter word (in WORDS)
   const isValidWord = (guessWordArr: string[]) => {
@@ -98,10 +103,11 @@ const App = () => {
             let tempAllWords = [...allGuessesArr];
             tempAllWords.push(currentGuessArr);
             if (isWordOfTheDay(currentGuessArr)) {
+              const guesses = allGuessesArr.length + 1;
               setWordFound(true);
               setWordStatus("correct");
               console.log("CORRECT WORD GUESSED!");
-              addWin();
+              addWin(guesses);
               addPreviousWordOfTheDay(wordOfTheDay);
             } else {
               console.log("Not the word of the day :(");
@@ -198,8 +204,8 @@ const App = () => {
   };
 
   return (
-    <div className="container">
-      <Header />
+    <div className={`container ${isDarkMode ? 'darkMode' : ''}`}>
+      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       <Popup 
         wordStatus={wordStatus} 
         wordOfTheDay={wordOfTheDay}
