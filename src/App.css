@@ -3,6 +3,9 @@
   --background: #f8f8f8;
   --popup-text: black;
   --popup-background: white;
+  --popup-bar-text: white;
+  --popup-bar-dark: #3a3a3a; 
+  --popup-bar-green: #538d4e; 
   --valid: #538d4e;
   --wrong-place: #c9b458;
   --not-valid: #787c7e;
