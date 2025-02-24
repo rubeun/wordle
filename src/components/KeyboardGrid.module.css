@@ -14,22 +14,24 @@
   min-width: 35px;
   height: 60px;
   padding: 0 10px;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   color: var(--key-text);
+  background-color: var(--key-background);
   &.backspace {
     padding: 9px 10px;    
   }
   &.wrongLetter {
-    color: var(--text);
+    color: var(--key-highlighted);
     background-color: var(--not-valid);
   }
   &.wrongPlace {
-    color: var(--text);
+    color: var(--key-highlighted);
     background-color: var(--wrong-place);
   }
   &.rightLetter {
-    color: var(--text);
+    color: var(--key-highlighted);
     background-color: var(--valid);
   }  
 }
