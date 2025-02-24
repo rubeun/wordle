@@ -4,17 +4,39 @@
   top: 25vh;
 }
 
-.popupContainer div {
+.popupContainer > div {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   color: var(--popup-text);
   background-color: var(--popup-background);
+  box-shadow: var(--box-shadow);
   border-radius: 10px;
   width: 200px;
   margin: 50px auto;
   padding: 20px;
+  & .guessInfo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px auto;
+    & .guessBar {
+      display: flex;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      & .guessPercentage {
+        font-size: 0.8rem;
+        color: var(--popup-bar-text);
+        background-color: var(--popup-bar-green);
+        margin-left: 5px;
+      }      
+    }    
+  }
 }
 
 .greenWord {
@@ -31,6 +53,10 @@
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+  }
 }
 
 /* Fancy Anim */
