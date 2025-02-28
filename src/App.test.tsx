@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders header', () => {
   render(<App />);
-  const headerElement = screen.getByText(/worlde app/i);
+  const headerElement = screen.getByText(/Rubeun's Wordle/i);
   expect(headerElement).toBeInTheDocument();
 });
