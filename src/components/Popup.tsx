@@ -72,9 +72,12 @@ const Popup = ({ wordStatus, wordOfTheDay, userInfo, resetBoard }: PopupType) =>
                 ? ( <div>
                   <h3>Out of Guesses!</h3>
                   <h5>The Correct Word was <span className={styles.greenWord}>{wordOfTheDay}</span></h5>
-                  <h5>Wins: {userInfo.wins}</h5><br />
-                  <h5>Losses: {userInfo.losses}</h5>
-                  <h5><button className={styles.nextWord} onClick={resetBoard}>Load Next Word</button></h5>
+                  <h5>Wins: {userInfo.wins}<br />
+                    Losses: {userInfo.losses}<br />
+                    Guess Distribution: <br />
+                    <GuessDistribution userInfo={userInfo} />
+                    <button className={styles.nextWord} onClick={resetBoard}>Load Next Word</button>
+                  </h5>
                 </div>)
                 : null  
       }
