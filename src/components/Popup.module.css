@@ -2,6 +2,7 @@
   position: fixed;
   width: 100%;
   top: 25vh;
+  z-index: 10;
 }
 
 .popupContainer > div {
