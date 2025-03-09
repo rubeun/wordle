@@ -6,6 +6,10 @@ type WordRowActiveType = {
   wordStatus: string;
 };
 
+type WordRowWinningType = {
+  winningLetters: string[];
+};
+
 type WordRowType = {
   guessWordArr: string[];
   answerWordArr: string[];
@@ -66,6 +70,23 @@ const WordRowActive = ({ currentGuessArr, wordStatus }: WordRowActiveType) => {
   );
 };
 
+const WordRowWinning = ({ winningLetters }: WordRowWinningType) => {
+  return (
+    <div className={styles.wordRow}>
+      {winningLetters.map((letter: string, index: number) => {
+        return (
+          <div
+            key={`word-row-winning-${index}`}
+            className={`${styles.wordRowLetter} ${styles.rightLetterRightPlace} ${styles.rightWord}`}
+          >
+            {letter}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 const WordRow = ({ guessWordArr, answerWordArr }: WordRowType) => {
   return (
     <div className={styles.wordRow}>
@@ -111,13 +132,24 @@ const WordGrid = ({
     return (
       <div className={styles.wordGrid}>
         {filledGuessesArr.length > 0
-          ? filledGuessesArr.map((wordArr: string[], index: number) => (
-              <WordRow
-                key={index}
-                guessWordArr={wordArr}
-                answerWordArr={answerWordArr}
-              />
-            ))
+          ? filledGuessesArr.map((wordArr: string[], index: number) => {
+            const wordString =  wordArr.join("");
+            const answerString = answerWordArr.join("");
+            if (wordString == answerString) {
+              return (
+                <WordRowWinning winningLetters={answerWordArr} />
+              );
+
+            } else {
+              return (
+                <WordRow
+                  key={index}
+                  guessWordArr={wordArr}
+                  answerWordArr={answerWordArr}
+                />
+              );
+            }
+          })
           : null}
         {filledGuessesArr.length < 6 ? (
           <WordRowActive currentGuessArr={currentGuessArr} wordStatus={wordStatus} />
