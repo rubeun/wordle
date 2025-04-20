@@ -1,3 +1,4 @@
+import { useEffect, useState  } from 'react';
 import styles from './Popup.module.css';
 
 type UserInfoType = {
@@ -13,6 +14,18 @@ type UserInfoType = {
   previousWordOfTheDays: string[],
 }
 
+type PopupScoreType = {
+  messageString: string, 
+  correctWord: string, 
+  userInfo: UserInfoType, 
+  delaySeconds: number,
+  resetBoard: any,
+}
+
+type PopupToastType = {
+  messageString: string, 
+}
+
 type PopupType = {
   wordStatus: string;
   wordOfTheDay: string;
@@ -21,11 +34,11 @@ type PopupType = {
 }
 
 const GuessDistribution = ({ userInfo }: any) => {
-  const numberOfGuesses = userInfo.previousWordOfTheDays.length;
+  const numberOfWins = userInfo.wins;
   let percentagesArr = [];
 
   for (let i = 1; i < 7; i++) {
-    const percentage = ((userInfo[`guessIn${i}`] / numberOfGuesses) * 100)
+    const percentage = ((userInfo[`guessIn${i}`] / numberOfWins) * 100)
     percentagesArr.push({
       width: `${percentage}%`
     })
@@ -49,36 +62,58 @@ const GuessDistribution = ({ userInfo }: any) => {
 
 }
 
+const PopupScore = ({ messageString, correctWord, userInfo, delaySeconds, resetBoard }: PopupScoreType) => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    if (delaySeconds > 0) {
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+      }, delaySeconds * 1000);
+
+      return () => clearTimeout(timer); // Cleanup on unmount or re-render
+    } else {
+      setShowPopup(true);
+    }
+  }, [delaySeconds]);
+
+  return (
+    <>
+      {showPopup ? (
+        <div>
+          <h3>{messageString}</h3>
+          {correctWord !== "" ? <h5>Correct word was <span className={styles.greenWord}>{correctWord}</span></h5> : null}
+          <h5>Wins: {userInfo.wins}<br />
+            Losses: {userInfo.losses}<br />
+            Guess Distribution: <br />
+            <GuessDistribution userInfo={userInfo} />
+            <button className={styles.nextWord} onClick={resetBoard}>Load Next Word</button>
+          </h5>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+const PopupSimple = ({ messageString }: PopupToastType) => {
+  return (
+    <div>{messageString}</div>
+  )
+}
+
 const Popup = ({ wordStatus, wordOfTheDay, userInfo, resetBoard }: PopupType) => {
   return (
     <div className={styles.popupContainer}>
       {wordStatus === "correct" 
-        ? ( <div>
-              <h3>Correct Word Guessed!</h3>
-              <h5>Wins: {userInfo.wins}<br />
-                Losses: {userInfo.losses}<br />
-                Guess Distribution: <br />
-                <GuessDistribution userInfo={userInfo} />
-                <button className={styles.nextWord} onClick={resetBoard}>Load Next Word</button>
-              </h5>
-            </div>)
+        ? (<PopupScore messageString="Correct Word Guessed!" correctWord={wordOfTheDay} userInfo={userInfo} delaySeconds={5} resetBoard={resetBoard} />)
         : wordStatus === "duplicate"
-          ? (<div>Already guessed</div>)
+          ? (<PopupSimple messageString={"Already guessed!"} />)
           : wordStatus === "invalid"
-            ? (<div>Invalid Word!</div>)
+            ? (<PopupSimple messageString={"Invalid word!"} />)
             : wordStatus === "short"
-              ? (<div>Word too short!</div>)
+              ? (<PopupSimple messageString={"Word too short!"} />)
               : wordStatus === "lost"
-                ? ( <div>
-                  <h3>Out of Guesses!</h3>
-                  <h5>The Correct Word was <span className={styles.greenWord}>{wordOfTheDay}</span></h5>
-                  <h5>Wins: {userInfo.wins}<br />
-                    Losses: {userInfo.losses}<br />
-                    Guess Distribution: <br />
-                    <GuessDistribution userInfo={userInfo} />
-                    <button className={styles.nextWord} onClick={resetBoard}>Load Next Word</button>
-                  </h5>
-                </div>)
+                ? (<PopupScore messageString={"Out of Guesses!"} correctWord={wordOfTheDay} userInfo={userInfo} delaySeconds={0} resetBoard={resetBoard} />)
                 : null  
       }
     </div>
